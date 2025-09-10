@@ -8,8 +8,8 @@ This is level 200 workshop that covers different aspects of working with [Azure 
 - What are the common use cases for Azure Firewall
 - How to deploy and configure Azure Firewall with hub-and-spoke architecture
 - How Azure Firewall policies are structured
-- How to create and manage Network rules
-- How to create and manage Application rules
+- How to create and manage Network and Application rules
+- What is SNAT port exhaustion and how to mitigate it
 - How to monitor Azure Firewall with logs and metrics
 
 and much more...
