@@ -24,10 +24,6 @@ Install Azure Resource Manager plugin from [marketplace](https://marketplace.vis
 
 Install Bicep plugin from [marketplace](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) 
 
-## Azure Policy Plugin for Visual Studio Code
-
-Install Azure Policy plugin from [marketplace](https://marketplace.visualstudio.com/items?itemName%253DAzurePolicy.azurepolicyextension)
-
 ## Windows Terminal (if you are using Windows)
 
 Download and install [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab&atc=true) or install it with `winget` (Windows only)
