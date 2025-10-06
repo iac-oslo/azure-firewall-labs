@@ -6,7 +6,7 @@ This is level 200 workshop that covers different aspects of working with [Azure 
 
 - What is Azure Firewall
 - What are the common use cases for Azure Firewall
-- How to deploy and configure Azure Firewall with hub-and-spoke architecture
+- How to deploy and configure Azure Firewall with hub-and-spoke network topology
 - How Azure Firewall policies are structured
 - How to create and manage Network and Application rules
 - What is SNAT port exhaustion and how to mitigate it
@@ -21,6 +21,7 @@ Workshop is organized as a combination of theoretical blocks with slides and han
 - Welcome + practical information
 - Azure Firewall overview (slides)
 - [Lab-01](labs/lab-01/index.md) - Provision lab resources
+- [Lab-02](labs/lab-02/index.md) - Configure Azure Firewall with hub-and-spoke network topology
 - [Lab-07](labs/lab-07/index.md) - Cleaning up resources
 
 

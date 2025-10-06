@@ -41,16 +41,17 @@ cd .\azure-firewall-labs\iac
 ./deploy.ps1
 ```
 
-Estimated deployment time is 8-10 min. 
+Estimated deployment time is approx. 12-15 min. 
 
 The following resources will be deployed in your subscription under `rg-westeurope-azfw-labs` resource group:
 
 | Resource name | Type | 
 |---------------|------|
 | law-westeurope-azfw-labs | Log Analytics Workspace |
-| nfp-westeurope | Firewall Policy |
-| naf-westeurope | Azure Firewall |
+| nfp-westeurope | Firewall Policy (Basic sku) |
+| naf-westeurope | Azure Firewall (Basic sku) |
 | pip-naf-westeurope | Public IP used by Azure Firewall |
+| naf-westeurope-mip | Azure Firewall Management IP Configuration |
 | bastion-westeurope | Azure Bastion Host (Standard)|
 | pip-bastion-westeurope | Public IP used by Azure Bastion Host |
 | vnet-hub-westeurope | Hub Virtual Network |
@@ -60,9 +61,11 @@ The following resources will be deployed in your subscription under `rg-westeuro
 | vm-spoke1-westeurope | Spoke1 Virtual Machine |
 | vm-spoke2-westeurope | Spoke2 Virtual Machine |
 
-Provision script is implemented as Bicep template with use of [Azure Verified modules](https://azure.github.io/Azure-Verified-Modules/indexes/bicep/bicep-resource-modules/) for most of the resources (except Azure Bastion Host)
+![lab-networking](../../assets/images/lab-01/infra.png)
 
-The following IP ranges are used for virtual networks:
+Provision script is implemented as Bicep template with use of [Azure Verified modules](https://azure.github.io/Azure-Verified-Modules/indexes/bicep/bicep-resource-modules/) for most of the resources except Azure Bastion Host.
+
+`10.9.0.0/16` address pool is used for lab networking and the following IP ranges are used for virtual networks:
 
 | Virtual Network | IP Range |
 |------------------|----------|
@@ -86,8 +89,9 @@ If you used the original script without changing it, most likely resources creat
 
 ### Azure Firewall Private IP
 
+Get private IP of Azure Firewall.
+
 ```powershell
-# Get private IP of Azure Firewall
 az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query ipConfigurations[0].privateIPAddress -o tsv
 ```
 
@@ -146,3 +150,12 @@ From spoke1 VM, check that you can both ping and ssh to `vm-hub-westeurope`.
 ping 10.9.0.132
 ssh iac-admin@10.9.0.132
 ```
+
+Note, that there is no connectivity between spoke1 and spoke2 VMs at this point. 
+
+```powershell
+ping 10.9.2.4
+ssh iac-admin@10.9.2.4
+```
+
+This is logical, because there is no peering between spoke1 and spoke2 VNets. We will address this in the next lab.
