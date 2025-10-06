@@ -1,4 +1,4 @@
-# lab-02 - configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
+# lab-03 - configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
 
 To allow traffic between spokes, we need to create an Azure Firewall Network rules to allow traffic between the two spokes. 
 

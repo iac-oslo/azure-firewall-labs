@@ -22,6 +22,7 @@ Workshop is organized as a combination of theoretical blocks with slides and han
 - Azure Firewall overview (slides)
 - [Lab-01](labs/lab-01/index.md) - Provision lab resources
 - [Lab-02](labs/lab-02/index.md) - Configure Azure Firewall with hub-and-spoke network topology
+- [Lab-03](labs/lab-03/index.md) - Configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
 - [Lab-07](labs/lab-07/index.md) - Cleaning up resources
 
 
