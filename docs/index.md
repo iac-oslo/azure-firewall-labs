@@ -9,6 +9,7 @@ This is level 200 workshop that covers different aspects of working with [Azure 
 - How to deploy and configure Azure Firewall with hub-and-spoke network topology
 - How Azure Firewall policies are structured
 - How to create and manage Network and Application rules
+- How to filter inbound Internet traffic with DNAT rules
 - What is SNAT port exhaustion and how to mitigate it
 - How to monitor Azure Firewall with logs and metrics
 
@@ -23,6 +24,7 @@ Workshop is organized as a combination of theoretical blocks with slides and han
 - [Lab-01](labs/lab-01/index.md) - Provision lab resources
 - [Lab-02](labs/lab-02/index.md) - Configure Azure Firewall with hub-and-spoke network topology
 - [Lab-03](labs/lab-03/index.md) - Configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
+- [Lab-05](labs/lab-05/index.md) - Filter inbound Internet traffic with Azure Firewall DNAT rules
 - [Lab-07](labs/lab-07/index.md) - Cleaning up resources
 
 
