@@ -8,6 +8,7 @@ nav:
   - Lab 01 - Provision lab resources: labs/lab-01/index.md
   - Lab 02 - Configure Azure Firewall with hub-and-spoke network topology: labs/lab-02/index.md
   - Lab 03 - Configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity: labs/lab-03/index.md
+  - Lab 04 - Configure Azure Firewall Application Rules to allow spoke-to-internet connectivity: labs/lab-04/index.md
   - Lab 05 - Filter inbound Internet traffic with Azure Firewall DNAT rules: labs/lab-05/index.md
   - Lab-07 - Cleaning up resources: labs/lab-07/index.md
 

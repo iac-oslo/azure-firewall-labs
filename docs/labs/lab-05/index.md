@@ -1,4 +1,4 @@
-# lab-03 - Filter inbound Internet traffic with Azure Firewall DNAT rules
+# lab-05 - Filter inbound Internet traffic with Azure Firewall DNAT rules
 
 
 Create new file `inbound-dnat-rules.bicep` with the following content:

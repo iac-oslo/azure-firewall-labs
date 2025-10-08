@@ -83,11 +83,11 @@ Provision script is implemented as Bicep template with use of [Azure Verified mo
 | AzureFirewallManagementSubnet    | 10.9.0.192/26 |
 | subnet-workload    | 10.9.0.128/26 |
 
-## Allocated IP addresses
+### Allocated IP addresses
 
 If you used the original script without changing it, most likely resources created under your subscription will be allocated with the same private IP addresses. Use scripts below to verify the allocated IP addresses. If they are different, you need to use your own IPs further in the labs.
 
-### Azure Firewall Private IP
+#### Azure Firewall Private IP
 
 Get private IP of Azure Firewall.
 
@@ -97,7 +97,7 @@ az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query ip
 
 Azure Firewall private IP is `10.9.0.4`
 
-### Virtual Machine IP addresses:
+#### Virtual Machine IP addresses:
 
 ```powershell
 # get private ip for vm-hub-westeurope
@@ -119,7 +119,37 @@ az vm show -d -g rg-westeurope-azfw-labs -n vm-spoke2-westeurope --query private
 
 Connect to `vm-spoke1-westeurope` using `az cli` Bastion and ssh extensions. Use `iac-admin` `fooBar123!` as a username and password to login. 
 
-## Task #2 - Connect to vm-hub-westeurope using Azure Bastion and SSH
+## Task #2 - Configure Diagnostic settings for Azure Firewall
+
+To be able to monitor Azure Firewall logs and metrics, we need to configure diagnostic settings for it. There are several destinations you can send diagnostic logs to, but in this lab we will use Log Analytics workspace. 
+
+Navigate to the `naf-westeurope` Azure Firewall resource in the portal, select `Monitoring -> Diagnostic settings` blade and click `+ Add diagnostic setting`.
+
+![diag-settings](../../assets/images/lab-01/diagnostic-settings-1.png)
+
+Fill in the following details:
+
+| Setting name | Value |
+|--------------|---------------------|
+| Diagnostic setting name  | diagnostic |
+| Send to Log Analytics workspace | Checked |
+| Subscription | Your subscription |   
+| Log Analytics workspace | law-westeurope-azfw-labs |
+| Destination table | Select `Resource specific` |
+| Categories | Check `Azure Firewall Network Rule`, `Azure Firewall Application Rule` and `Azure Firewall Nat Rule`  |
+
+![diag-settings-2](../../assets/images/lab-01/diagnostic-settings-2.png)
+
+Click Save.
+
+Destination table `Resource specific` means that logs and metrics are written to individual tables for each category of the resource. We selected `Azure Firewall Network Rule`, `Azure Firewall Application Rule` and `Azure Firewall Nat Rule` categories, so the following tables will be created in Log Analytics workspace:
+
+- `AZFWNetworkRule`
+- `AZFWApplicationRule`
+- `AZFWNatRule`
+
+
+## Task #3 - Connect to vm-hub-westeurope using Azure Bastion and SSH
 
 Get `vm-hub-westeurope` VM resource id and SSH into it via bastion host.
 
@@ -135,7 +165,7 @@ ping 10.9.1.4
 ssh iac-admin@10.9.1.4
 ```
 
-## Task #2 - Connect to vm-spoke1-westeurope using Azure Bastion and SSH
+## Task #4 - Connect to vm-spoke1-westeurope using Azure Bastion and SSH
 
 Get `vm-spoke1-westeurope` VM resource id and SSH into it via bastion host.
 

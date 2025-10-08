@@ -16,14 +16,24 @@ For our lab, we will look at the following potential traffic flow:
 
 - Spoke-to-spoke traffic
 - Spoke-to-internet traffic
-- Internet-to-spoke traffic
+- Internet-to-spoke traffic 
 
+## Task #1 - implement spoke-to-spoke and spoke-to-internet connectivity
 
-## Task #1 - implement spoke-to-spoke connectivity
-
+### Spoke-to-spoke traffic
 As we learned from lab1, spokes aren't peered to each other, and virtual network peering isn't transitive. Each spoke knows how to route to the hub virtual network by default, but not to other spokes. To fix this, we need to add User Defined Routes (UDR) to each spoke subnet with a route for `0.0.0.0/0` with next hop set to Azure Firewall private IP address in the hub virtual network.
+Firewall rules for spoke-to-spoke traffic flow will be configured at lab-03.
 
-During lab-01 we already deployed Azure Firewall in the hub virtual network. First, let's get the private IP address of the Azure Firewall using `az cli`.
+### Spoke-to-internet traffic
+The `0.0.0.0/0` route in the spoke route table also covers traffic sent to the public internet. This route overwrites the system route included in public subnets by default. 
+Firewall rules for spoke-to-internet traffic flow will be configured at lab-04.
+
+### Internet-to-spoke traffic
+Internet-to-spoke traffic flow will be covered in lab-05.
+
+![spoke-to-spoke-and-internet](../../assets/images/lab-02/udr.png)
+
+During lab-01 we already deployed Azure Firewall in the hub virtual network. Now we need to implement User Defined Routes (UDR) that will route spoke traffic via  Azure Firewall. First, let's get the private IP address of the Azure Firewall using `az cli`.
 
 ```powershell
 az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "ipConfigurations[0].privateIPAddress" -o tsv
@@ -31,19 +41,19 @@ az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "i
 
 If you used the original script without changing it, the private IP address of Azure Firewall should be `10.9.0.4`.
 
-Now, let's create UDR for spoke-to-spoke traffic. Create `spoke-to-spoke-udr.bicep` file with the following content:
+Now, let's create UDR for spoke-to-spoke and spoke-to-internet traffic flows. Create `spoke-udr.bicep` file with the following content:
 
 ```bicep
 param firewallPrivateIp string = '10.9.0.4'
 
 resource spoke1Route 'Microsoft.Network/routeTables@2021-02-01' = {
-  name: 'spoke-to-spoke-udr'
+  name: 'spoke-udr'
   location: resourceGroup().location
   properties: {
     disableBgpRoutePropagation: false
     routes: [
       {
-        name: 'spoke-to-spoke'
+        name: 'spoke-to-spoke-and-internet'
         properties: {
           addressPrefix: '0.0.0.0/0'
           nextHopType: 'VirtualAppliance'
@@ -58,20 +68,24 @@ resource spoke1Route 'Microsoft.Network/routeTables@2021-02-01' = {
 Deploy it using `az cli`:
 
 ```powershell
-az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke-to-spoke-udr.bicep
+# Get Azure Firewall Private IP address
+$firewallIP = (az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "ipConfigurations[0].privateIPAddress" -o tsv)
+
+# Deploy UDR
+az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke-udr.bicep --parameter firewallPrivateIp=$firewallIP
 ```
 
 Now, we need to associate this UDR with both spokes subnets. Let's assign it to the spoke1 subnet sing `az cli`:
 
 ```powershell
-az network vnet subnet update --resource-group rg-westeurope-azfw-labs --vnet-name vnet-spoke1-westeurope --name subnet-workload --route-table spoke-to-spoke-udr
+az network vnet subnet update --resource-group rg-westeurope-azfw-labs --vnet-name vnet-spoke1-westeurope --name subnet-workload --route-table spoke-udr
 ```
 
 For spoke2, let's use Bicep to assign the UDR to the spoke2 subnet. Create `spoke2-subnet.bicep` file with the following content:
 
 ```bicep
 resource udr 'Microsoft.Network/routeTables@2021-02-01' existing = {
-  name: 'spoke-to-spoke-udr'
+  name: 'spoke-udr'
 } 
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
@@ -126,7 +140,7 @@ You should see the following results
 
 ![blocked-ping](../../assets/images/lab-02/blocked-ping.png)
 
-As you can see, ICMP traffic (aka ping) from `10.9.0.1 (vm-spoke1-westeurope)` to `10.9.2.4 (vm-spoke2-westeurope)` is being blocked (Action = `Deny`) by Azure Firewall.
+As you can see, ICMP traffic (aka ping) from `10.9.1.4 (vm-spoke1-westeurope)` to `10.9.2.4 (vm-spoke2-westeurope)` is being blocked (Action = `Deny`) by Azure Firewall.
 
-> Note! There might be a delay of few minutes before Azure Firewall logs appear in Log Analytics for querying. If you don't see logs after 5 minutes, don't waste your time and proceed to next tasks. Get back to logs later.
+> Note! There might be a delay of a few minutes before Azure Firewall logs appear in Log Analytics for querying. If you don't see logs after 5 minutes, don't waste your time and proceed to next tasks. We will get back to logs later.
 

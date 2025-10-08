@@ -1,6 +1,10 @@
 # lab-03 - configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
 
-To allow traffic between spokes, we need to create an Azure Firewall Network rules to allow traffic between the two spokes. 
+To allow traffic between spokes, we need to create an Azure Firewall Network rules specifying what kind of traffic is allowed. 
+
+Let's implement the following rules:
+- Allow ICMP (ping) traffic between spokes
+- Allow SSH (TCP:22) from `vm-spoke1-westeurope` to `vm-spoke2-westeurope`
 
 ## Task #1 - create Network Rule to allow ICMP (ping) traffic between spokes
 
@@ -64,7 +68,7 @@ When deployed, get back to your spoke1 VM terminal session and try to ping the s
 
 This time ping should be successful.
 
-Check the Azure Firewall logs to see the allowed traffic.
+Check the Azure Firewall logs to see that traffic is allowed now. Again, it might take some minutes for the logs to appear.
 
 ```kusto
 AZFWNetworkRule
@@ -73,7 +77,6 @@ AZFWNetworkRule
 ```
 
 ![allowed-ping](../../assets/images/lab-03/allowed-ping.png)
-
 
 ## Task #2 - create Network Rule to allow SSH from spoke1 VM to spoke 2 VM
 
