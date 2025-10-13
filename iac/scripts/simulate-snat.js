@@ -14,6 +14,8 @@ export default function() {
   expect.soft(res.status).toBe(200);
   res = http.get('https://ifconfig.me');
   expect.soft(res.status).toBe(200);
+  res = http.get('https://microsoft.com');
+  expect.soft(res.status).toBe(200);
   sleep(1);
 }
 
