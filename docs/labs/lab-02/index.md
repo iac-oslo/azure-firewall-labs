@@ -21,11 +21,16 @@ For our lab, we will look at the following potential traffic flow:
 ## Task #1 - implement spoke-to-spoke and spoke-to-internet connectivity
 
 ### Spoke-to-spoke traffic
-As we learned from lab1, spokes aren't peered to each other, and virtual network peering isn't transitive. Each spoke knows how to route to the hub virtual network by default, but not to other spokes. To fix this, we need to add User Defined Routes (UDR) to each spoke subnet with a route for `0.0.0.0/0` with next hop set to Azure Firewall private IP address in the hub virtual network.
-Firewall rules for spoke-to-spoke traffic flow will be configured at lab-03.
+As we learned from lab1, spokes are peered into the hub virtual network and aren't peered to each other. Virtual network peering isn't transitive. Each spoke knows how to route to the hub virtual network by default, but not to other spokes. To fix this, we need to add a User Defined Route table for each spoke subnet with a route(s) with next hop set to Azure Firewall private IP address in the hub virtual network.
+
+In our lab, lets define the following routing rules:
+
+- from spoke1, everything should be routed via Azure Firewall
+- from spoke2, only traffic to spoke1 should be routed via Azure Firewall
+
 
 ### Spoke-to-internet traffic
-The `0.0.0.0/0` route in the spoke route table also covers traffic sent to the public internet. This route overwrites the system route included in public subnets by default. 
+The `0.0.0.0/0` route in the spoke1 route table also covers traffic sent to the public internet. This route overwrites the system route included in public subnets by default. 
 Firewall rules for spoke-to-internet traffic flow will be configured at lab-04.
 
 ### Internet-to-spoke traffic
@@ -41,19 +46,19 @@ az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "i
 
 If you used the original script without changing it, the private IP address of Azure Firewall should be `10.9.0.4`.
 
-Now, let's create UDR for spoke-to-spoke and spoke-to-internet traffic flows. Create `spoke-udr.bicep` file with the following content:
+Now, let's create UDR for spoke1 traffic flows. Create `spoke1-udr.bicep` file with the following content:
 
 ```bicep
 param firewallPrivateIp string = '10.9.0.4'
 
 resource spoke1Route 'Microsoft.Network/routeTables@2021-02-01' = {
-  name: 'spoke-udr'
+  name: 'spoke1-udr'
   location: resourceGroup().location
   properties: {
     disableBgpRoutePropagation: false
     routes: [
       {
-        name: 'spoke-to-spoke-and-internet'
+        name: 'spoke1-udr'
         properties: {
           addressPrefix: '0.0.0.0/0'
           nextHopType: 'VirtualAppliance'
@@ -72,21 +77,56 @@ Deploy it using `az cli`:
 $firewallIP = (az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "ipConfigurations[0].privateIPAddress" -o tsv)
 
 # Deploy UDR
-az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke-udr.bicep --parameter firewallPrivateIp=$firewallIP
+az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke1-udr.bicep --parameter firewallPrivateIp=$firewallIP
 ```
 
-Now, we need to associate this UDR with both spokes subnets. Let's assign it to the spoke1 subnet sing `az cli`:
+Now, we need to associate this UDR with spoke1 subnets. Let's assign it to the spoke1 subnet sing `az cli`:
 
 ```powershell
-az network vnet subnet update --resource-group rg-westeurope-azfw-labs --vnet-name vnet-spoke1-westeurope --name subnet-workload --route-table spoke-udr
+az network vnet subnet update --resource-group rg-westeurope-azfw-labs --vnet-name vnet-spoke1-westeurope --name subnet-workload --route-table spoke1-udr
 ```
 
-For spoke2, let's use Bicep to assign the UDR to the spoke2 subnet. Create `spoke2-subnet.bicep` file with the following content:
+Now, let's create UDR for spoke2 traffic flows. Create `spoke2-udr.bicep` file with the following content:
+
+```bicep
+param firewallPrivateIp string = '10.9.0.4'
+param spoke1AddressRange string = '10.9.1.0/24'
+
+resource spoke2Route 'Microsoft.Network/routeTables@2021-02-01' = {
+  name: 'spoke2-udr'
+  location: resourceGroup().location
+  properties: {
+    disableBgpRoutePropagation: false
+    routes: [
+      {
+        name: 'spoke2-udr'
+        properties: {
+          addressPrefix: spoke1AddressRange
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: firewallPrivateIp
+        }
+      }
+    ]
+  }
+}
+```
+
+Deploy it using `az cli`:
+
+```powershell
+# Get Azure Firewall Private IP address
+$firewallIP = (az network firewall show -g rg-westeurope-azfw-labs -n naf-westeurope --query "ipConfigurations[0].privateIPAddress" -o tsv)
+
+# Deploy UDR
+az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke2-udr.bicep --parameter firewallPrivateIp=$firewallIP
+```
+
+Let's use Bicep to assign the UDR to the spoke2 subnet. Create `spoke2-subnet.bicep` file with the following content:
 
 ```bicep
 resource udr 'Microsoft.Network/routeTables@2021-02-01' existing = {
-  name: 'spoke-udr'
-} 
+  name: 'spoke2-udr'
+}
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: 'vnet-spoke2-westeurope'

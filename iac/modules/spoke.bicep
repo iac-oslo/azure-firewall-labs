@@ -84,8 +84,18 @@ module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
         storageAccountType: 'Standard_LRS'
       }
     }
+    extensionCustomScriptConfig: {
+      name: 'install-iperf3'
+      settings: {
+        fileUris: [
+          'https://raw.githubusercontent.com/evgenyb/azfw-perf/refs/heads/main/iac/scripts/install-k6.sh'
+        ]
+        commandToExecute: 'sh install-k6.sh'
+      }
+    }
+
     osType: 'Linux'
-    vmSize: 'Standard_B1s'
+    vmSize: 'Standard_D2ds_v6'
     availabilityZone: -1
     location: parLocation
     enableTelemetry: false
