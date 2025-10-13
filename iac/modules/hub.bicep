@@ -9,7 +9,6 @@ param adminPassword string
 
 var varVNetName = 'vnet-hub-${parLocation}'
 
-
 module modVNet 'br/public:avm/res/network/virtual-network:0.7.0' = {
   name: 'deploy-${varVNetName}'
   params: {
@@ -51,46 +50,6 @@ module modVNet 'br/public:avm/res/network/virtual-network:0.7.0' = {
   }
 }
 
-module publicIP 'br/public:avm/res/network/public-ip-address:0.9.0' = {
-  name: 'deploy-public-ip'
-  params: {
-    name: 'pip-bastion-${parLocation}'
-    location: parLocation
-    skuName: 'Standard'
-    availabilityZones: []
-  }
-}
-
-resource resBastion 'Microsoft.Network/bastionHosts@2024-07-01' = {
-  name: 'bastion-${parLocation}'
-  location: parLocation
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
-    enableTunneling: true
-    enableIpConnect: false
-    disableCopyPaste: false
-    enableShareableLink: false
-    enableKerberos: false
-    enableSessionRecording: false
-    ipConfigurations: [
-      {
-        name: 'IpConfAzureBastionSubnet'
-        properties: {
-          privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: publicIP.outputs.resourceId
-          }
-          subnet: {
-            id: '${modVNet.outputs.resourceId}/subnets/AzureBastionSubnet'
-          }
-        }
-      }
-    ]
-  }
-}
-
 module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
   name: 'deploy-hub-vm-${parLocation}'
   params: {
@@ -127,43 +86,6 @@ module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
     availabilityZone: -1
     location: parLocation
     enableTelemetry: false
-  }
-}
-
-module firewallPolicy 'br/public:avm/res/network/firewall-policy:0.3.1' = {
-  name: 'firewallPolicyDeployment'
-  params: {
-    name: 'nfp-${parLocation}'
-    tier: 'Basic'
-    threatIntelMode: 'Off'
-  }
-}
-
-var nafName = 'naf-${parLocation}'
-module azureFirewall 'br/public:avm/res/network/azure-firewall:0.8.0' = {
-  name: 'deploy-azure-firewall-basic'
-  params: {
-    name: nafName
-    azureSkuTier: 'Basic'
-    location: parLocation
-    virtualNetworkResourceId: modVNet.outputs.resourceId
-    firewallPolicyId: firewallPolicy.outputs.resourceId
-    publicIPAddressObject: {
-      name: 'pip-01-${nafName}'
-      publicIPAllocationMethod: 'Static'
-      skuName: 'Standard'
-      skuTier: 'Regional'
-    }    
-  }
-}
-
-module secondFirewallPublicIP 'br/public:avm/res/network/public-ip-address:0.9.0' = {
-  name: 'deploy-second-azfw-public-ip'
-  params: {
-    name: 'pip-02-${nafName}'
-    location: parLocation
-    skuName: 'Standard'
-    availabilityZones: []
   }
 }
 
