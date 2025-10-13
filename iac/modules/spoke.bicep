@@ -88,7 +88,8 @@ module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
       name: 'install-iperf3'
       settings: {
         fileUris: [
-          'https://raw.githubusercontent.com/evgenyb/azfw-perf/refs/heads/main/iac/scripts/install-k6.sh'
+          'https://raw.githubusercontent.com/iac-oslo/azure-firewall-labs/refs/heads/main/iac/scripts/install-k6.sh'
+          'https://raw.githubusercontent.com/iac-oslo/azure-firewall-labs/refs/heads/main/iac/scripts/simulate-snat.js'
         ]
         commandToExecute: 'sh install-k6.sh'
       }
