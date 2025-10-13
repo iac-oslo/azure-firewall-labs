@@ -50,7 +50,8 @@ The following resources will be deployed in your subscription under `rg-westeuro
 | law-westeurope-azfw-labs | Log Analytics Workspace |
 | nfp-westeurope | Firewall Policy (Basic sku) |
 | naf-westeurope | Azure Firewall (Basic sku) |
-| pip-naf-westeurope | Public IP used by Azure Firewall |
+| pip-01-naf-westeurope | Public IP used by Azure Firewall |
+| pip-02-naf-westeurope | Public IP used by Azure Firewall |
 | naf-westeurope-mip | Azure Firewall Management IP Configuration |
 | bastion-westeurope | Azure Bastion Host (Standard)|
 | pip-bastion-westeurope | Public IP used by Azure Bastion Host |
