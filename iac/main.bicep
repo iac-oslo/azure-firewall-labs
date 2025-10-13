@@ -39,6 +39,24 @@ module hub 'modules/hub.bicep' = {
   }
 }
 
+module bastion 'modules/bastion.bicep' = {
+  name: 'deploy-bastion-${resourcePrefix}'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    parLocation: location
+    hubVnetId: hub.outputs.hubVnetId
+  }
+}
+
+module firewall 'modules/firewall.bicep' = {
+  name: 'deploy-firewall-${resourcePrefix}'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    parLocation: location
+    hubVnetId: hub.outputs.hubVnetId
+  }
+}
+
 module spokes 'modules/spoke.bicep' = [for i in range(1, 2): {
   name: 'deploy-spoke${i}-${resourcePrefix}'
   scope: resourceGroup(resourceGroupName)

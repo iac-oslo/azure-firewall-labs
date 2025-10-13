@@ -85,7 +85,7 @@ module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
       }
     }
     extensionCustomScriptConfig: {
-      name: 'install-iperf3'
+      name: 'install-k6'
       settings: {
         fileUris: [
           'https://raw.githubusercontent.com/iac-oslo/azure-firewall-labs/refs/heads/main/iac/scripts/install-k6.sh'
