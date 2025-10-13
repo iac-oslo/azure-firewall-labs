@@ -149,11 +149,21 @@ module azureFirewall 'br/public:avm/res/network/azure-firewall:0.8.0' = {
     virtualNetworkResourceId: modVNet.outputs.resourceId
     firewallPolicyId: firewallPolicy.outputs.resourceId
     publicIPAddressObject: {
-      name: 'pip-${nafName}'
+      name: 'pip-01-${nafName}'
       publicIPAllocationMethod: 'Static'
       skuName: 'Standard'
       skuTier: 'Regional'
     }    
+  }
+}
+
+module secondFirewallPublicIP 'br/public:avm/res/network/public-ip-address:0.9.0' = {
+  name: 'deploy-second-azfw-public-ip'
+  params: {
+    name: 'pip-02-${nafName}'
+    location: parLocation
+    skuName: 'Standard'
+    availabilityZones: []
   }
 }
 
