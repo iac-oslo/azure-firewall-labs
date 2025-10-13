@@ -63,7 +63,7 @@ Deploy it using `az cli`:
 $yourHomeIP = (curl -s ifconfig.me)
 
 # get firewall Public IP
-$firewallPublicIP = (az network public-ip show --resource-group rg-westeurope-azfw-labs --name pip-naf-westeurope --query ipAddress --output tsv)
+$firewallPublicIP = (az network public-ip show --resource-group rg-westeurope-azfw-labs --name pip-01-naf-westeurope --query ipAddress --output tsv)
 
 # deploy inbound-dnat-rules.bicep
 az deployment group create --resource-group rg-westeurope-azfw-labs --template-file inbound-dnat-rules.bicep --parameters parYourHomeIP=$yourHomeIP --parameters parFirewallPublicIP=$firewallPublicIP
