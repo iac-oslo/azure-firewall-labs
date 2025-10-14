@@ -3,10 +3,10 @@
 
 # Task #1 - allow outbound traffic to everything from spoke1 VNet
 
-For simplicity, we will allow outbound traffic to everything from spoke1 VNet. In production, you should never do it and always limit outbound traffic to only required destinations.
+For simplicity, we will allow outbound traffic to everything from spoke VNets. In production, you should never do it and always limit outbound traffic to only required destinations.
 
 
-Create `spoke1-outbound-rules.bicep` file with the following content:
+Create `spokes-outbound-rules.bicep` file with the following content:
 
 ```bicep
 param parLocation string = 'westeurope'
@@ -35,6 +35,7 @@ resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleColle
             description: 'Allow HTTP/HTTPS to all'
             sourceAddresses: [
               '10.9.1.0/24'
+              '10.9.2.0/24'
             ]
             protocols: [
               {
@@ -60,7 +61,7 @@ resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleColle
 Deploy it using `az cli`:
 
 ```powershell
-az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spoke1-outbound-rules.bicep
+az deployment group create --resource-group rg-westeurope-azfw-labs --template-file spokes-outbound-rules.bicep
 ```
 
 # Task #2 - execute stress test to simulate SNAT port exhaustion
@@ -85,14 +86,16 @@ k6 run simulate-snat.js
 ```
 
 The script will run for 5 minutes. While we are waiting, let's check the SNAT port usage in Azure Firewall metrics.
-Open Azure Portal, navigate to Azure Firewall `azfw-westeurope` and click on `Metrics` blade. Select `SNAT Used Ports` metric and set the time range to last 30 min. You should see the SNAT port usage increasing as the stress test is running.
+Open Azure Portal, navigate to Azure Firewall `azfw-westeurope` and click on `Metrics` blade. Select `SNAT Port Utilization` metric and set the time range to `last 30 min` at Local time. You should see the SNAT port usage increasing as the stress test is running.
+
+![Add second public IP](../../assets/images/lab-06/metrics.png)
 
 # Task #3 - add second public IP to Azure Firewall
 
-To mitigate SNAT port exhaustion, we will add a second public IP address to Azure Firewall. Let's do it using `az cli`:
+To mitigate SNAT port exhaustion, we will add a second public IP address to Azure Firewall. Navigate to Azure Firewall `azfw-westeurope` in Azure Portal and click on `IP configurations` blade. Click on `+ Add` button to add `pip-02-naf-westeurope` Public IP.
 
-```powershell
-az network firewall ip-config create --firewall-name azfw-westeurope --name azfw-ipconfig2 --public-ip-address azfw-pip2-westeurope --vnet-name vnet-hub-westeurope --resource-group rg-westeurope-azfw-labs
-```
+![Add second public IP](../../assets/images/lab-06/add-second-ip.png)
 
+When new IP is added, re-run the stress test. While running observe the SNAT port usage in Azure Firewall metrics. You should see that the SNAT port usage is now lower as the traffic is distributed across two public IP addresses.
 
+![Add second public IP](../../assets/images/lab-06/compare-metrics.png)

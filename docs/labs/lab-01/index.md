@@ -41,7 +41,7 @@ cd .\azure-firewall-labs\iac
 ./deploy.ps1
 ```
 
-Estimated deployment time is approx. 10 min. 
+Estimated deployment time is approx. 10-15 min. 
 
 The following resources will be deployed in your subscription under `rg-westeurope-azfw-labs` resource group:
 

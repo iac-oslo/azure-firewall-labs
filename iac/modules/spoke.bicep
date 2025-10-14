@@ -66,10 +66,10 @@ module modVirtualMachine 'br/public:avm/res/compute/virtual-machine:0.20.0' = {
       }
     ]
     osDisk: {
-      caching: 'ReadWrite'
+      caching: 'ReadWrite'      
       diskSizeGB: 128
       managedDisk: {
-        storageAccountType: 'Standard_LRS'
+        storageAccountType: 'StandardSSD_LRS'
       }
     }
     extensionCustomScriptConfig: {

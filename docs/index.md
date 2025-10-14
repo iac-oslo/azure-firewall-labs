@@ -26,7 +26,7 @@ Workshop is organized as a combination of theoretical blocks with slides and han
 - [Lab-03](labs/lab-03/index.md) - Configure Azure Firewall Network Rules to allow spoke-to-spoke connectivity
 - [Lab-04](labs/lab-04/index.md) - Configure Azure Firewall Application Rules to allow spoke-to-internet connectivity
 - [Lab-05](labs/lab-05/index.md) - Filter inbound Internet traffic with Azure Firewall DNAT rules
-- [Lab-06](labs/lab-06/index.md) - Mitigating SNAT port exhaustion
+- [Lab-06](labs/lab-06/index.md) - Mitigating SNAT port exhaustion (still WIP)
 - [Lab-07](labs/lab-07/index.md) - Cleaning up resources
 
 

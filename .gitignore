@@ -399,3 +399,9 @@ FodyWeavers.xsd
 
 # mkdocs build output folder
 site
+
+# Bicep files created to test lab
+spoke1-udr.bicep
+spoke2-udr.bicep
+spoke2-subnet.bicep
+spokes-outbound-rules.bicep

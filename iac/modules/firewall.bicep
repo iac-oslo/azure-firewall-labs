@@ -36,6 +36,6 @@ module secondFirewallPublicIP 'br/public:avm/res/network/public-ip-address:0.9.0
     name: 'pip-02-${nafName}'
     location: parLocation
     skuName: 'Standard'
-    availabilityZones: []
+    availabilityZones: [1, 2, 3]
   }
 }

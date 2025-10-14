@@ -49,7 +49,7 @@ If you used the original script without changing it, the private IP address of A
 Now, let's create UDR for spoke1 traffic flows. Create `spoke1-udr.bicep` file with the following content:
 
 ```bicep
-param firewallPrivateIp string
+param firewallPrivateIp string = '10.9.0.4'
 
 resource spoke1Route 'Microsoft.Network/routeTables@2021-02-01' = {
   name: 'spoke1-udr'
