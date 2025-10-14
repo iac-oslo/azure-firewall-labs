@@ -3,7 +3,6 @@ targetScope = 'resourceGroup'
 param parLocation string
 param parIndex int
 param parAddressRange string
-param parWorkspaceResourceId string
 param adminUsername string
 @secure()
 param adminPassword string
@@ -18,17 +17,6 @@ module modVNet 'br/public:avm/res/network/virtual-network:0.7.0' = {
       parAddressRange
     ]
     name: varVNetName
-    diagnosticSettings: [
-      {
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'diagnostic'
-        workspaceResourceId: parWorkspaceResourceId
-      }
-    ]
     location: parLocation
     subnets: [
       {

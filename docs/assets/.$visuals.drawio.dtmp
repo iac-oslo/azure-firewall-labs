@@ -458,12 +458,12 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="6vcD5MrtXV11LUmiRAT9-0" value="DNAT rules" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="Q63pfCl-3XVAbvzJdRsQ-1">
-          <mxGeometry x="699" y="142" width="167" height="60" as="geometry">
+          <mxGeometry x="699" y="142" width="298" height="60" as="geometry">
             <mxRectangle x="754" y="95" width="108" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="6vcD5MrtXV11LUmiRAT9-1" value="10.9.1.4, TCP, 22" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="6vcD5MrtXV11LUmiRAT9-0">
-          <mxGeometry y="30" width="167" height="30" as="geometry" />
+          <mxGeometry y="30" width="298" height="30" as="geometry" />
         </mxCell>
         <mxCell id="6vcD5MrtXV11LUmiRAT9-3" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/laptop_client.svg;" vertex="1" parent="Q63pfCl-3XVAbvzJdRsQ-1">
           <mxGeometry x="514" y="-105" width="45" height="50" as="geometry" />
@@ -476,7 +476,7 @@
             <mxPoint x="536" y="23" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="6vcD5MrtXV11LUmiRAT9-7" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;SSH request&lt;/h1&gt;&lt;p&gt;IP:&amp;nbsp;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;132.78.12.34&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Port: 22&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Protocol: TCP&lt;/span&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="Q63pfCl-3XVAbvzJdRsQ-1">
+        <mxCell id="6vcD5MrtXV11LUmiRAT9-7" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;SSH request&lt;/h1&gt;&lt;p&gt;Source ID:&amp;nbsp;84.213.179.62&lt;/p&gt;&lt;p&gt;Destionation IP:&amp;nbsp;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;132.78.12.34&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Port: 22&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;text-wrap-mode: nowrap; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Protocol: TCP&lt;/span&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="Q63pfCl-3XVAbvzJdRsQ-1">
           <mxGeometry x="632" y="-78" width="180" height="120" as="geometry" />
         </mxCell>
       </root>

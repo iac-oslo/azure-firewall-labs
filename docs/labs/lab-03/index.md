@@ -24,7 +24,7 @@ var spokeIPs = [
 
 resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2023-05-01' = {
   parent: firewallPolicies
-  name: 'SpokesFirewallRuleCollectionGroup'
+  name: 'SpokesFirewallNetworkRuleCollectionGroup'
   properties: {
     priority: 200
     ruleCollections: [
@@ -98,7 +98,7 @@ var spokeIPs = [
 
 resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2023-05-01' = {
   parent: firewallPolicies
-  name: 'SpokesFirewallRuleCollectionGroup'
+  name: 'SpokesFirewallNetworkRuleCollectionGroup'
   properties: {
     priority: 200
     ruleCollections: [
