@@ -9,13 +9,9 @@ export const options = {
 
 export default function() {
   let res = http.get('https://quickpizza.grafana.com');
-  expect.soft(res.status).toBe(200);
   res = http.get('https://google.com');
-  expect.soft(res.status).toBe(200);
   res = http.get('https://ifconfig.me');
-  expect.soft(res.status).toBe(200);
   res = http.get('https://microsoft.com');
-  expect.soft(res.status).toBe(200);
   sleep(1);
 }
 

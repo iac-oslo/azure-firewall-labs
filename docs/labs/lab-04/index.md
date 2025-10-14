@@ -20,7 +20,7 @@ AZFWApplicationRule
 
 To allow traffic to the internet, we need to create Application rules specifying what kind of traffic is allowed.
 
-# Task #1 - create Application Rules to allow access to `ifconfig.me` site from spoke1 VNet
+# Task #1 - create Application Rules to allow access to `ifconfig.me` from spoke1 VNet
 
 Create `spoke-app-rules.bicep` file with the following content:
 
@@ -64,9 +64,6 @@ resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleColle
             ]
             targetFqdns: [
               'ifconfig.me'
-              'quickpizza.grafana.com'
-              'google.com'
-              'microsoft.com'
             ]
           }
         ]
