@@ -64,6 +64,9 @@ resource spokesRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleColle
             ]
             targetFqdns: [
               'ifconfig.me'
+              'quickpizza.grafana.com'
+              'google.com'
+              'microsoft.com'
             ]
           }
         ]
